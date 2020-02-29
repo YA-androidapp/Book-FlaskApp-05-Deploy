@@ -36,6 +36,7 @@
 ~$ apache2 -v
 Server version: Apache/2.4.18 (Ubuntu)
 Server built:   2019-10-08T13:31:25
+~$ sudo apt install apache2-dev
 ```
 
 ### Python3 のインストール
@@ -49,15 +50,104 @@ Server built:   2019-10-08T13:31:25
 ```bash
 ~$ cd /opt
 /opt$ sudo mkdir flaskroot
+/opt$ sudo chown -R y:y flaskroot
 /opt$ cd flaskroot/
-/opt/flaskroot$ sudo chown -R y:y
 /opt/flaskroot$ python3 -m venv flaskenv
 /opt/flaskroot$ . flaskenv/bin/activate
 /opt/flaskroot$ pip install -U pip
-/opt/flaskroot$ pip install mod_wsgi-httpd
 /opt/flaskroot$ pip install mod_wsgi
+/opt/flaskroot$ pip freeze | grep wsgi
+mod-wsgi==4.7.1
 /opt/flaskroot$ pip install flask
 ```
+
+`mod_wsgi-py35.cpython-35m-x86_64-linux-gnu.so` が存在するかチェックします。
+
+```bash
+/opt/flaskroot$ find -name "mod_wsgi-py*.cpython-*m-x86_64-linux-gnu.so"
+./flaskenv/lib/python3.5/site-packages/mod_wsgi/server/mod_wsgi-py35.cpython-35m-x86_64-linux-gnu.so
+/opt/flaskroot$ ls /opt/flaskroot/flaskenv/lib/python3.5/site-packages/mod_wsgi/server/mod_wsgi-py35.cpython-35m-x86_64-linux-gnu.so
+/opt/flaskroot/flaskenv/lib/python3.5/site-packages/mod_wsgi/server/mod_wsgi-py35.cpython-35m-x86_64-linux-gnu.so
+```
+
+- /opt/flaskroot\$ sudo nano /etc/apache2/mods-available/wsgi_flask.conf
+
+```
+WSGIPythonHome /opt/flaskroot/flaskenv
+WSGISocketPrefix /var/run/wsgi
+```
+
+- /etc/apache2/mods-available/wsgi_flask.load
+
+```
+LoadModule wsgi_module /opt/flaskroot/flaskenv/lib/python3.5/site-packages/mod_wsgi/server/mod_wsgi-py35.cpython-35m-x86_64-linux-gnu.so
+```
+
+```bash
+/opt/flaskroot$ sudo a2enmod wsgi_flask
+Enabling module wsgi_flask.
+To activate the new configuration, you need to run:
+  service apache2 restart
+/opt/flaskroot$ sudo service apache2 restart
+```
+
+```bash
+/opt/flaskroot$ cd /etc/apache2/sites-available
+/etc/apache2/sites-available$ sudo cp 000-default.conf 000-default.conf.bak
+```
+
+- /etc/apache2/sites-available/000-default.conf
+
+```
+        ### <VirtualHost></VirtualHost>の内側
+        WSGIDaemonProcess flaskapp user=www-data group=www-data threads=5 python-path=/opt/flaskroot/flaskenv/lib/python3.5/site-packages
+        WSGIScriptAlias /flaskapp /opt/flaskroot/flaskapp/wsgi.py
+        WSGIScriptReloading On
+
+        <Directory /opt/flaskroot/flaskapp>
+                WSGIProcessGroup flaskapp
+                WSGIApplicationGroup %{GLOBAL}
+                Require all granted
+        </Directory>
+        ### <VirtualHost></VirtualHost>の内側
+```
+
+```bash
+/etc/apache2/sites-available$ cd /opt/flaskroot
+/opt/flaskroot$ mkdir flaskapp
+/opt/flaskroot$ cd flaskapp
+```
+
+- app.py
+
+```py
+# -*- coding:utf-8 -*-
+from flask import Flask
+
+app = Flask(__name__)
+
+@app.route('/')
+def index():
+    return 'It works!'
+
+if __name__ == '__main__':
+    app.run()
+```
+
+- wsgi.py
+
+```
+import sys, os
+sys.path.append('/opt/flaskroot/flaskapp')
+
+from app import app as application # 'from app'のappは'app.py'のapp
+```
+
+```sh
+sudo service apache2 reload
+```
+
+ブラウザで `http://<VPSのIPアドレス>/flaskapp` にアクセスして、 `It works!` と表示されることを確認します。
 
 ## Heroku を使用する場合
 
