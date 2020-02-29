@@ -2,6 +2,12 @@
 
 ---
 
+## PythonAnywhere を使用する場合
+
+## Heroku を使用する場合
+
+## Azure を使用する場合
+
 ## VPS を使用する場合
 
 以下の Ubuntu 環境を想定した手順を示します。
@@ -149,6 +155,4 @@ sudo service apache2 reload
 
 ブラウザで `http://<VPSのIPアドレス>/flaskapp` にアクセスして、 `It works!` と表示されることを確認します。
 
-## Heroku を使用する場合
-
-## Azure を使用する場合
+<img src="README-src/apache01.png" width="30%" alt="Apache" />
