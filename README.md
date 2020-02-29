@@ -1,8 +1,105 @@
 # Book-FlaskApp-05-Deploy
 
----
+## デプロイ先ごとの特徴
+
+| サービス       | DB:SQLite | DB:MySQL | DB:PostgreSQL | 備考                                                                                      |
+| -------------- | --------- | -------- | ------------- | ----------------------------------------------------------------------------------------- |
+| PythonAnywhere | ○         | ○        | （有償）      | Python に特化しているため初回デプロイまでの設定が簡単。ローカルファイルを永続的に保持可能 |
+| Heroku         | ×         | ○        | ○             |                                                                                           |
+| Azure          | ×         |          |               |                                                                                           |
+| VPS            | ○         | ○        | ○             | もっとも自由度が高いが、設定が煩雑                                                        |
 
 ## PythonAnywhere を使用する場合
+
+### アカウント作成と初期設定
+
+[PythonAnywhere](https://www.pythonanywhere.com)アクセスし、 `Start running Python online in less than a minute! &raquo;` ボタンをクリックします。
+
+<img src="README-src/pyaw01.png" width="30%" alt="PythonAnywhere" />
+
+`Create a Beginner account` をクリックします。
+
+<img src="README-src/pyaw02.png" width="30%" alt="PythonAnywhere" />
+
+必要事項を入力し、 `Register` をクリックします。`Username` には、半角英数のみ使用できます(記号は不可)。
+
+<img src="README-src/pyaw03.png" width="30%" alt="PythonAnywhere" />
+
+メールアドレスを検証するメールが届くので、メール本文のリンクをクリックし、開いたページで `Save` をクリックします。
+
+<img src="README-src/pyaw13.png" width="30%" alt="PythonAnywhere" />
+
+`Web` を開きます。
+
+<img src="README-src/pyaw14.png" width="30%" alt="PythonAnywhere" />
+
+`Add a new web app` をクリックし、 `Next` をクリックします。
+
+<img src="README-src/pyaw15.png" width="30%" alt="PythonAnywhere" />
+
+`Flask` をクリックします。
+
+<img src="README-src/pyaw16.png" width="30%" alt="PythonAnywhere" />
+
+`Python 3.8` をクリックします（ローカルにインストールされている Python のバージョンと揃えます）。
+
+<img src="README-src/pyaw17.png" width="30%" alt="PythonAnywhere" />
+
+`Next` をクリックします。
+
+<img src="README-src/pyaw20.png" width="30%" alt="PythonAnywhere" />
+
+`All done!` と通知が表示されることを確認します。
+
+<img src="README-src/pyaw21.png" width="30%" alt="PythonAnywhere" />
+
+### ソースコードの記述
+
+`Code` の `Go to directory` をクリックします。
+
+<img src="README-src/pyaw26.png" width="30%" alt="PythonAnywhere" />
+
+`flask_app.py` の `Edit` アイコンをクリックします。
+
+<img src="README-src/pyaw28.png" width="30%" alt="PythonAnywhere" />
+
+Flask アプリのコード（ `app.py` の内容 ）をコピーアンドぺーストします。
+
+<img src="README-src/pyaw29.png" width="30%" alt="PythonAnywhere" />
+
+必要に応じて、 `templates` ディレクトリや `static` ディレクトリなどのディレクトリを作成し、ファイルを追加します。
+
+<img src="README-src/pyaw36.png" width="30%" alt="PythonAnywhere" />
+
+<img src="README-src/pyaw37.png" width="30%" alt="PythonAnywhere" />
+
+<img src="README-src/pyaw38.png" width="30%" alt="PythonAnywhere" />
+
+<img src="README-src/pyaw39.png" width="30%" alt="PythonAnywhere" />
+
+<img src="README-src/pyaw40.png" width="30%" alt="PythonAnywhere" />
+
+### 動作確認
+
+`Reload ***.pythonanywhere.com` をクリックします。
+
+<img src="README-src/pyaw42.png" width="30%" alt="PythonAnywhere" />
+
+[https://\*\*\*.pythonanywhere.com/](https://***.pythonanywhere.com/) にアクセスし、動作確認をします。
+
+<img src="README-src/pyaw45.png" width="30%" alt="PythonAnywhere" />
+
+<img src="README-src/pyaw46.png" width="30%" alt="PythonAnywhere" />
+
+<img src="README-src/pyaw47.png" width="30%" alt="PythonAnywhere" />
+
+<img src="README-src/pyaw48.png" width="30%" alt="PythonAnywhere" />
+
+<img src="README-src/pyaw49.png" width="30%" alt="PythonAnywhere" />
+
+<img src="README-src/pyaw50.png" width="30%" alt="PythonAnywhere" />
+
+<img src="README-src/pyaw51.png" width="30%" alt="PythonAnywhere" />
 
 ## Heroku を使用する場合
 
